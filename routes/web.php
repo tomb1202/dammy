@@ -12,6 +12,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController as ControllersUserController;
 use App\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Cache;
@@ -149,24 +150,26 @@ Route::middleware(['admin'])
         });
     });
 
+Route::get('/api/account/detail/{id}', [AdminController::class, 'detail']);
 
-Route::get('/view-image', function () {
-    $image = request()->query('image');
 
-    if (empty($image)) {
-        abort(404, 'Image is required.');
-    }
+// Route::get('/view-image', function () {
+//     $image = request()->query('image');
 
-    // Cache theo hash md5 của URL trong 1 ngày
-    $cacheKey = 'resolved_image_' . md5($image);
-    $resolvedUrl = Cache::remember($cacheKey, now()->addDay(), fn() => chapter_image_url($image));
+//     if (empty($image)) {
+//         abort(404, 'Image is required.');
+//     }
 
-    if (empty($resolvedUrl)) {
-        abort(404, 'Image could not be resolved.');
-    }
+//     // Cache theo hash md5 của URL trong 1 ngày
+//     $cacheKey = 'resolved_image_' . md5($image);
+//     $resolvedUrl = Cache::remember($cacheKey, now()->addDay(), fn() => chapter_image_url($image));
 
-    return redirect()->away($resolvedUrl);
-})->name('view-image');
+//     if (empty($resolvedUrl)) {
+//         abort(404, 'Image could not be resolved.');
+//     }
+
+//     return redirect()->away($resolvedUrl);
+// })->name('view-image');
 
 // admin
 Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
@@ -174,54 +177,56 @@ Route::post('/login',  [AdminController::class, 'postLogin'])->name('admin.post.
 Route::post('/logout',  [AdminController::class, 'logout'])->name('admin.logout');
 
 
-// site
-Route::get('/', [HomeController::class, 'index']);
+// // site
+// Route::get('/', [HomeController::class, 'index']);
 
-Route::post('/user/register', [ControllersUserController::class, 'register'])->name('site.register');
-Route::post('/user/login', [ControllersUserController::class, 'login'])->name('site.login');
-Route::post('/user/reset-password', [ControllersUserController::class, 'sendResetLinkEmail'])->name('password.email');
+// Route::post('/user/register', [ControllersUserController::class, 'register'])->name('site.register');
+// Route::post('/user/login', [ControllersUserController::class, 'login'])->name('site.login');
+// Route::post('/user/reset-password', [ControllersUserController::class, 'sendResetLinkEmail'])->name('password.email');
 
-Route::middleware(['check.user.login'])->group(function () {
-    Route::post('/user/logout', [ControllersUserController::class, 'logout'])->name('user.logout');
-    Route::get('/user/setting', [ControllersUserController::class, 'info'])->name('user.info');
-    Route::post('/user/setting', [ControllersUserController::class, 'update'])->name('user.setting');
-    Route::delete('/history/{comicId}', [ControllersUserController::class, 'destroy'])->name('history.destroy');
-});
+// Route::middleware(['check.user.login'])->group(function () {
+//     Route::post('/user/logout', [ControllersUserController::class, 'logout'])->name('user.logout');
+//     Route::get('/user/setting', [ControllersUserController::class, 'info'])->name('user.info');
+//     Route::post('/user/setting', [ControllersUserController::class, 'update'])->name('user.setting');
+//     Route::delete('/history/{comicId}', [ControllersUserController::class, 'destroy'])->name('history.destroy');
+// });
 
-Route::get('/the-loai', [PageController::class, 'categories'])->name('categories');
-Route::get('/truyen-full', [PageController::class, 'completed'])->name('completed');
+// Route::get('/the-loai', [PageController::class, 'categories'])->name('categories');
+// Route::get('/truyen-full', [PageController::class, 'completed'])->name('completed');
 
-Route::get('/lich-su-xem', [PageController::class, 'history'])->name('site.history');
-Route::get('/tim-kiem', [PageController::class, 'search'])->name('search');
+// Route::get('/lich-su-xem', [PageController::class, 'history'])->name('site.history');
+// Route::get('/tim-kiem', [PageController::class, 'search'])->name('search');
 
-Route::get('/{categorySlug}', [PageController::class, 'category'])->name('site.category');
+// Route::get('/{categorySlug}', [PageController::class, 'category'])->name('site.category');
 
-Route::get('/truyen/{slug}', [ViewController::class, 'show'])->name('comic.show');
-Route::get('/truyen/{comicSlug}/chuong/{chapterSlug}', [ViewController::class, 'chapter'])->name('chapter.show');
-
-
-Route::get('/the-loai/manhwa', [PageController::class, 'manhwa'])->name('manhwa');
-Route::get('/the-loai/manga', [PageController::class, 'manhwa'])->name('manga');
+// Route::get('/truyen/{slug}', [ViewController::class, 'show'])->name('comic.show');
+// Route::get('/truyen/{comicSlug}/chuong/{chapterSlug}', [ViewController::class, 'chapter'])->name('chapter.show');
 
 
-Route::get('/storage/uploads/advs/{path?}', function ($path) {
-    $cacheKey = 'adv_' . $path;
+// Route::get('/the-loai/manhwa', [PageController::class, 'manhwa'])->name('manhwa');
+// Route::get('/the-loai/manga', [PageController::class, 'manhwa'])->name('manga');
 
-    if (Cache::store('file')->has($cacheKey)) {
-        $imageString = Cache::store('file')->get($cacheKey);
-    } else {
-        $imagePath = storage_path('app/public/uploads/advs/' . $path);
 
-        if (!file_exists($imagePath)) {
-            $imagePath = public_path('system/img/no-image.png');
-        }
+// Route::get('/storage/uploads/advs/{path?}', function ($path) {
+//     $cacheKey = 'adv_' . $path;
 
-        $imageString = file_get_contents($imagePath);
+//     if (Cache::store('file')->has($cacheKey)) {
+//         $imageString = Cache::store('file')->get($cacheKey);
+//     } else {
+//         $imagePath = storage_path('app/public/uploads/advs/' . $path);
 
-        Cache::store('file')->put($cacheKey, $imageString, now()->addMinutes(60));
-    }
+//         if (!file_exists($imagePath)) {
+//             $imagePath = public_path('system/img/no-image.png');
+//         }
 
-    $response = response($imageString)->header('Content-Type', 'image/gif');
-    $response->header('Cache-Control', 'public, max-age=31536000');
-    return $response;
-})->name('web.adv.banner');
+//         $imageString = file_get_contents($imagePath);
+
+//         Cache::store('file')->put($cacheKey, $imageString, now()->addMinutes(60));
+//     }
+
+//     $response = response($imageString)->header('Content-Type', 'image/gif');
+//     $response->header('Cache-Control', 'public, max-age=31536000');
+//     return $response;
+// })->name('web.adv.banner');
+
+Route::get('/', [TestController::class, 'index']);
