@@ -1,0 +1,147 @@
+[
+    {
+        "module": "dashboards",
+        "prefix": "dashboards",
+        "name": "Tổng quan",
+        "description": "Module tổng quan website",
+        "icon": "fa-bar-chart",
+        "class_name": "admin-settings",
+        "route": "admin.dashboard"
+    },
+    {
+        "module": "Truyện",
+        "prefix": "Comic",
+        "name": "Truyện",
+        "description": "Truyện",
+        "icon": "fa-book",
+        "class_name": "admin-settings",
+        "childrens": [
+            {
+                "name": "Danh sách",
+                "route": "admin.comic.index",
+                "icon": "fa-book"
+            },
+            {
+                "name": "Chương",
+                "route": "admin.chapter.index",
+                "icon": "fa-list-ol"
+            },
+            {
+                "name": "Thể loại",
+                "route": "admin.category.index",
+                "icon": "fa-tags"
+            }
+        ]
+    },
+
+    {
+        "module": "Người dùng",
+        "prefix": "User",
+        "name": "Người dùng",
+        "description": "Người dùng",
+        "icon": "fa-users",
+        "class_name": "admin-settings",
+        "childrens": [
+            {
+                "name": "Thành viên",
+                "route": "admin.user.index",
+                "icon": "fa-user"
+            },
+            {
+                "name": "Bình luận",
+                "route": "admin.comment.index",
+                "icon": "fa-comments"
+            },
+            {
+                "name": "Đánh giá",
+                "route": "admin.rating.index",
+                "icon": "fa-star"
+            },
+            {
+                "name": "Theo dõi",
+                "route": "admin.follow.index",
+                "icon": "fa-eye"
+            }
+        ]
+    },
+    {
+        "module" : "Quảng Cáo",
+        "prefix" : "Quảng Cáo",
+        "name"   : "Quảng Cáo",
+        "description" : "Ads management module",
+        "icon"        : "fa-briefcase",
+        "class_name"   : "admin-settings",
+        "childrens"       : [
+            {
+                "name" : "List",
+                "route": "admin.adv.index",
+                "icon" : "fa-th-list"
+            },
+            {
+                "name" : "Textlink",
+                "route": "admin.adv.text-link",
+                "icon" : "fa-text-width"
+            },
+            {
+                "name" : "Banner",
+                "route": "admin.adv.banner",
+                "icon" : "fa-picture-o"
+            },
+            {
+                "name" : "Banner Script",
+                "route": "admin.adv.banner-script",
+                "icon" : "fa-picture-o"
+            },
+            {
+                "name" : "Catfish",
+                "route": "admin.adv.catfish",
+                "icon" : "fa-puzzle-piece"
+            },
+            {
+                "name" : "Preload",
+                "route": "admin.adv.preload",
+                "icon" : "fa-object-ungroup"
+            },
+            {
+                "name" : "Push JS",
+                "route": "admin.adv.pushjs",
+                "icon" : "fa-paper-plane-o"
+            },
+            {
+                "name" : "Popup JS",
+                "route": "admin.adv.popupjs",
+                "icon" : "fa-caret-square-o-up"
+            },
+            {
+                "name" : "Header script",
+                "route": "admin.adv.header",
+                "icon" : "fa-header"
+            },
+            {
+                "name" : "Bottom script",
+                "route": "admin.adv.bottom",
+                "icon" : "fa-scribd"
+            }
+        ]
+    },
+    {
+        "module": "Khác",
+        "prefix": "Other",
+        "name": "Khác",
+        "description": "Module quản lý Khác",
+        "icon": "fa-ellipsis-h",
+        "class_name": "admin-settings",
+        "childrens": [
+            {
+                "name": "Tài khoản",
+                "route": "admin.account.index",
+                "icon": "fa-shield"
+            },
+            {
+                "name": "Cài đặt",
+                "route": "admin.settings.index",
+                "icon": "fa-cogs"
+            }
+        ]
+    }
+]

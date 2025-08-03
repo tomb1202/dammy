@@ -1,0 +1,36 @@
+apps:
+  - name: mehentai
+    script: artisan
+    interpreter: php
+    exec_mode: fork
+    instances: 7
+    args:
+      - queue:work
+      - --queue=default
+      - --tries=2
+      - --timeout=3600
+      - --sleep=2
+      - --backoff=60
+    watch: false
+    max_memory_restart: 500M
+    autorestart: true
+    env:
+      APP_ENV: local
+
+  - name: queue-chapters
+    script: artisan
+    interpreter: php
+    exec_mode: fork
+    instances: 7
+    args:
+      - queue:work
+      - --queue=chapters
+      - --tries=2
+      - --timeout=3600
+      - --sleep=2
+      - --backoff=60
+    watch: false
+    max_memory_restart: 500M
+    autorestart: true
+    env:
+      APP_ENV: local
